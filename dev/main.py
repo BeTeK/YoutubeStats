@@ -34,8 +34,9 @@ def gatherChannelInfo(youtube, channelId):
     info = youtube.getChannelInfo([channelId])
     subCount = int(info[channelId]["statistics"]["subscriberCount"]) if not info[channelId]["statistics"]["hiddenSubscriberCount"] else None
     title = info[channelId]["snippet"]["title"]
+    description = info[channelId]["snippet"]["description"].replace("\n", "\\n")
     
-    return {"subCount" : subCount, "title": title}
+    return {"subCount" : subCount, "title": title, "description" : description}
 
 def gatherAllChannelInfo(youtube, channelNameOrId):
     try:
@@ -47,7 +48,7 @@ def gatherAllChannelInfo(youtube, channelNameOrId):
         gategories = list(reversed([(youtube.getVideoGategory(i[0]), i[1]) for i in gategories]))
         topGategories = [i[0] for i in gategories[:3]]
         
-        out = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\n".format(channelData["title"], channelData["subCount"], videoData["likes"], videoData["dislikes"], videoData["views"], videoData["videoCount"], "\t".join(topGategories))
+        out = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\n".format(channelData["title"], channelData["subCount"], videoData["likes"], videoData["dislikes"], videoData["views"], videoData["videoCount"], channelData["description"], "\t".join(topGategories))
         sys.stdout.write(out)
     except Exception as ex:
         print(ex)
@@ -56,9 +57,9 @@ def gatherAllChannelInfo(youtube, channelNameOrId):
     
 def main():
     youtube = Youtube.Youtube(apiKey.apiKey)
-    sys.stdout.write("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\n".format("title", "subcriber count", "likes", "dislikes", "views", "video count", "top gategories"))
+    sys.stdout.write("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\n".format("title", "subcriber count", "likes", "dislikes", "views", "video count", "description", "top gategories"))
     for i in sys.stdin:
-        sys.stderr.write("processing {0}\n".format(i))
+        sys.stderr.write("processing {0}".format(i))
         channelName = i.replace("\n", "").replace("\r", "")
         if len(i) == 0 or i.startswith("#"):
             continue
