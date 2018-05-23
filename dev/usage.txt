@@ -1,0 +1,2 @@
+use fetch_channels.sh to generate channels file
+then use python main.py < channels.txt to generate results

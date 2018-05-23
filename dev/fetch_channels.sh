@@ -1,0 +1,1 @@
+wget "https://socialblade.com/youtube/top/5000/mostsubscribed" -O - 2> /dev/null | egrep -o "youtube/(user|channel)/[^\"]*"  | sed -E "s/([^/]*)(\/)([^/]*)(\/)([^/]*)/\5/" | sort | uniq > channels.txt

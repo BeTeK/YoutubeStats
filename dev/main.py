@@ -34,7 +34,7 @@ def gatherChannelInfo(youtube, channelId):
     info = youtube.getChannelInfo([channelId])
     subCount = int(info[channelId]["statistics"]["subscriberCount"]) if not info[channelId]["statistics"]["hiddenSubscriberCount"] else None
     title = info[channelId]["snippet"]["title"]
-    description = info[channelId]["snippet"]["description"].replace("\n", "\\n")
+    description = info[channelId]["snippet"]["description"].replace("\n", "\\n").replace("\t", "").replace("\r", "")
     
     return {"subCount" : subCount, "title": title, "description" : description}
 

@@ -63,7 +63,7 @@ class Youtube:
         if len(chId["items"]) > 0:
             return chId["items"][0]["id"]
         
-        return None
+        raise Exception("Cannot find id for channel {0}".format(nameOrId))
 
     def _iterateAllItems(self, fn, params):
         results = fn(**params).execute()
